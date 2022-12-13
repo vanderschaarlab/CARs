@@ -31,6 +31,8 @@ tags
 
 # Packaging related files
 *.rst
+!AUTHORS.rst
+!CHANGELOG.rst
 .coveragerc
 .readthedocs.yml
 docs/

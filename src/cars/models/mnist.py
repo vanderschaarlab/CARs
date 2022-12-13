@@ -11,7 +11,7 @@ import torch.optim as opt
 import torchvision.transforms as transforms
 from torchvision import datasets
 from tqdm import tqdm
-from utils.metrics import AverageMeter
+from cars.utils.metrics import AverageMeter
 from abc import abstractmethod
 from os import path
 from types import SimpleNamespace
