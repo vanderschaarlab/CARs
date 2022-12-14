@@ -49,4 +49,4 @@ jobs:
             pip install --upgrade torch
             pip install .[testing]
       - name: Test with pytest
-        run: pytest -vvvsx -m "not slow" --durations=50
+        run: pytest -vvvsx
