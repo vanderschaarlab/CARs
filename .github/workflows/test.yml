@@ -2,7 +2,7 @@ name: Tests
 
 on:
   push:
-    branches: [main, release]
+    branches: [main, release, packaging]
   pull_request:
     types: [opened, synchronize, reopened]
   schedule:
@@ -49,4 +49,4 @@ jobs:
             pip install --upgrade torch
             pip install .[testing]
       - name: Test with pytest
-        run: pytest -vvvsx
+        run: pytest -vvv
