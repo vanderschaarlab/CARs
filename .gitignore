@@ -69,6 +69,7 @@ pip-delete-this-directory.txt
 # Unittest and coverage
 htmlcov/*
 .tox/
+tox.ini
 .nox/
 .cache
 nosetests.xml
