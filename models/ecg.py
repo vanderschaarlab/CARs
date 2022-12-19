@@ -5,7 +5,7 @@ import pathlib
 import json
 import numpy as np
 from tqdm import tqdm
-from cars.utils.metrics import AverageMeter
+from utils.metrics import AverageMeter
 
 
 class ClassifierECG(nn.Module):

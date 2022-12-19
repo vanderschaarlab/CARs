@@ -6,7 +6,7 @@ import pathlib
 from torchvision.models import inception_v3, resnet50
 from tqdm import tqdm
 from typing import Optional
-from cars.utils.metrics import AverageMeter
+from utils.metrics import AverageMeter
 
 
 class CUBClassifier(nn.Module):

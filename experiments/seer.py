@@ -4,13 +4,13 @@ import argparse
 import logging
 import pandas as pd
 import numpy as np
-from cars.utils.dataset import SEERDataset, generate_seer_concept_dataset
-from cars.models.seer import SEERClassifier
+from utils.dataset import SEERDataset, generate_seer_concept_dataset
+from models.seer import SEERClassifier
 from pathlib import Path
 from torch.utils.data import DataLoader
-from cars.utils.plot import plot_seer_global_explanation, plot_seer_feature_importance
-from cars.explanations.concept import CAR, CAV
-from cars.explanations.feature import CARFeatureImportance
+from utils.plot import plot_seer_global_explanation, plot_seer_feature_importance
+from explanations.concept import CAR, CAV
+from explanations.feature import CARFeatureImportance
 from tqdm import tqdm
 from sklearn.metrics import accuracy_score
 
