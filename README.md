@@ -20,6 +20,10 @@ pip install -r requirements.txt
 
 When the packages are installed, you are ready to perform concept explanations.
 
+OR from to install from source, simply perform:
+
+`pip install .`
+
 ## 2. Toy example
 
 Bellow, you can find a toy demonstration where we compute label-free feature and example importance
