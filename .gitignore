@@ -175,3 +175,5 @@ dmypy.json
 data/
 results/
 tests/
+
+.github
