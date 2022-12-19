@@ -3,7 +3,7 @@ import logging
 import numpy as np
 import torch
 import torch.nn as nn
-from cars.utils.metrics import AverageMeter
+from utils.metrics import AverageMeter
 from tqdm import tqdm
 
 

@@ -20,10 +20,6 @@ pip install -r requirements.txt
 
 When the packages are installed, you are ready to perform concept explanations.
 
-OR from to install from source, simply perform:
-
-`pip install .`
-
 ## 2. Toy example
 
 Bellow, you can find a toy demonstration where we compute label-free feature and example importance
@@ -35,11 +31,11 @@ import torch
 from torchvision.datasets import MNIST
 from torchvision.transforms import transforms
 from pathlib import Path
-from cars.utils.dataset import generate_mnist_concept_dataset
-from cars.models.mnist import ClassifierMnist
-from cars.experiments.mnist import concept_to_class
-from cars.explanations.concept import CAR
-from cars.explanations.feature import CARFeatureImportance
+from utils.dataset import generate_mnist_concept_dataset
+from models.mnist import ClassifierMnist
+from experiments.mnist import concept_to_class
+from explanations.concept import CAR
+from explanations.feature import CARFeatureImportance
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 data_dir = Path.cwd()/"data/mnist"
