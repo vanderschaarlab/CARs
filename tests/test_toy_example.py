@@ -51,7 +51,7 @@ cav.fit(H_train.detach().cpu().numpy(), C_train)
 # Predict concept labels
 cav_preds = cav.concept_importance(
     H_test.detach().cpu().numpy(),
-    torch.from_numpy(C_test.astype(int)),
+    torch.from_numpy(C_test).long(),
     10,
     model.representation_to_output,
 )
