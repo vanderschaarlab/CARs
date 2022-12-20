@@ -48,6 +48,8 @@ jobs:
             pip install --upgrade pip
             pip install --upgrade torch
             pip install --upgrade torchvision
+            pip install pandas
+            pip install numpy
             pip install pytest
             pip install .[testing]
       - name: Test with pytest
