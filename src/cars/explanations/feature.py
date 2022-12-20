@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from tqdm import tqdm
 from captum import attr
-from explanations.concept import ConceptExplainer
+from cars.explanations.concept import ConceptExplainer
 from torch.utils.data import DataLoader
 
 

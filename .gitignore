@@ -1,10 +1,18 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
+# Temporary and binary files
+*~
 *.py[cod]
-*$py.class
-
-# C extensions
 *.so
+*.cfg
+!.isort.cfg
+!setup.cfg
+*.orig
+*.log
+*.pot
+__pycache__/*
+.cache/*
+.*.swp
+*/.ipynb_checkpoints/*
+.DS_Store
 
 # Distribution / packaging
 .Python
@@ -24,8 +32,21 @@ pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
+
+# Project files
+.ropeproject
+.project
+.pydevproject
+.settings
+.idea
+.vscode
+tags
+
+# Package files
 *.egg
-MANIFEST
+*.eggs/
+.installed.cfg
+*.egg-info
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -33,22 +54,33 @@ MANIFEST
 *.manifest
 *.spec
 
+# Packaging related files
+*.rst
+!AUTHORS.rst
+!CHANGELOG.rst
+.coveragerc
+.readthedocs.yml
+docs/
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
-htmlcov/
+# Unittest and coverage
+htmlcov/*
 .tox/
+tox.ini
 .nox/
-.coverage
-.coverage.*
 .cache
 nosetests.xml
-coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
+.coverage
+.coverage.*
+.tox
+junit*.xml
+coverage.xml
 .pytest_cache/
 
 # Translations
@@ -81,15 +113,20 @@ target/
 profile_default/
 ipython_config.py
 
-# pyenv
-.python-version
+# Build and docs folder/files
+build/*
+dist/*
+sdist/*
+docs/api/*
+docs/_rst/*
+docs/_build/*
+cover/*
+MANIFEST
 
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
+# Per-project virtualenvs
+.venv*/
+.conda*/
+.python-version
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
@@ -131,9 +168,9 @@ dmypy.json
 # Pycharm
 .idea/
 
-# Project specific
-data/
-results/
-
 # NLP
 .vector_cache
+
+# project specific
+data/
+results/

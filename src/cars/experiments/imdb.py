@@ -8,7 +8,7 @@ from captum.concept._utils.data_iterator import (
     CustomIterableDataset,
 )
 from sklearn.metrics import accuracy_score
-from explanations.concept import CAR
+from cars.explanations.concept import CAR
 import torch.nn as nn
 import torch.nn.functional as F
 

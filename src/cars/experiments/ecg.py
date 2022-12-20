@@ -7,13 +7,13 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from torch.utils.data import DataLoader
-from utils.dataset import ECGDataset, generate_ecg_concept_dataset
-from models.ecg import ClassifierECG
-from utils.hooks import register_hooks, get_saved_representations, remove_all_hooks
-from explanations.concept import CAR, CAV
-from explanations.feature import CARFeatureImportance, VanillaFeatureImportance
+from cars.utils.dataset import ECGDataset, generate_ecg_concept_dataset
+from cars.models.ecg import ClassifierECG
+from cars.utils.hooks import register_hooks, get_saved_representations, remove_all_hooks
+from cars.explanations.concept import CAR, CAV
+from cars.explanations.feature import CARFeatureImportance, VanillaFeatureImportance
 from sklearn.metrics import accuracy_score
-from utils.plot import (
+from cars.utils.plot import (
     plot_concept_accuracy,
     plot_global_explanation,
     plot_attribution_correlation,

@@ -6,13 +6,13 @@ import numpy as np
 import os
 import pandas as pd
 from pathlib import Path
-from models.mnist import ClassifierMnist, init_trainer, get_dataloader
+from cars.models.mnist import ClassifierMnist, init_trainer, get_dataloader
 from torchvision.datasets import MNIST
 from torch.utils.data import DataLoader
 from torchvision import transforms
-from utils.hooks import register_hooks, get_saved_representations, remove_all_hooks
-from utils.dataset import generate_mnist_concept_dataset
-from utils.plot import (
+from cars.utils.hooks import register_hooks, get_saved_representations, remove_all_hooks
+from cars.utils.dataset import generate_mnist_concept_dataset
+from cars.utils.plot import (
     plot_concept_accuracy,
     plot_global_explanation,
     plot_grayscale_saliency,
@@ -21,12 +21,12 @@ from utils.plot import (
     plot_concept_size_impact,
     plot_tcar_inter_concepts,
 )
-from explanations.concept import CAR, CAV
-from explanations.feature import CARFeatureImportance, VanillaFeatureImportance
+from cars.explanations.concept import CAR, CAV
+from cars.explanations.feature import CARFeatureImportance, VanillaFeatureImportance
 from sklearn.metrics import accuracy_score
 from sklearn.gaussian_process.kernels import Matern
 from tqdm import tqdm
-from utils.robustness import Attacker
+from cars.utils.robustness import Attacker
 
 
 concept_to_class = {

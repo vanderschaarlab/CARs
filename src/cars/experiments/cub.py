@@ -6,10 +6,10 @@ import pandas as pd
 import numpy as np
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Subset
-from explanations.concept import CAR, CAV
-from explanations.feature import CARFeatureImportance, VanillaFeatureImportance
+from cars.explanations.concept import CAR, CAV
+from cars.explanations.feature import CARFeatureImportance, VanillaFeatureImportance
 from tqdm import tqdm
-from utils.plot import (
+from cars.utils.plot import (
     plot_concept_accuracy,
     plot_global_explanation,
     plot_attribution_correlation,
@@ -17,9 +17,9 @@ from utils.plot import (
 )
 from sklearn.metrics import accuracy_score
 from pathlib import Path
-from utils.dataset import load_cub_data, CUBDataset, generate_cub_concept_dataset
-from models.cub import CUBClassifier, CUBResNet
-from utils.hooks import register_hooks, remove_all_hooks, get_saved_representations
+from cars.utils.dataset import load_cub_data, CUBDataset, generate_cub_concept_dataset
+from cars.models.cub import CUBClassifier, CUBResNet
+from cars.utils.hooks import register_hooks, remove_all_hooks, get_saved_representations
 
 train_path = str(Path.cwd() / "data/cub/CUB_processed/class_attr_data_10/train.pkl")
 val_path = str(Path.cwd() / "data/cub/CUB_processed/class_attr_data_10/val.pkl")
