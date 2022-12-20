@@ -7,6 +7,7 @@ import pickle
 import numpy as np
 import linecache
 from PIL import Image
+from typing import Dict, List
 from torchvision.datasets import MNIST
 from torchvision import transforms
 from torch.utils.data.sampler import SubsetRandomSampler
@@ -400,7 +401,7 @@ class CUBDataset(Dataset):
         """
         return [self.class_name(i) for i in range(self.N_CLASSES)]
 
-    def get_concept_categories(self) -> dict[str, list]:
+    def get_concept_categories(self) -> Dict[str, List]:
         """
         Get all the groups of related concepts
         Returns:
