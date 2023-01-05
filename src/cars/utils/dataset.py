@@ -429,7 +429,7 @@ class CUBDataset(Dataset):
         return groups_dic
 
     def get_concepts_subset(
-        self, concept_ids: list[int], instance_per_concept: int, random_seed: int
+        self, concept_ids: List[int], instance_per_concept: int, random_seed: int
     ) -> List[int]:
         """
         Give a list of example indices to create balance subset with several concepts
@@ -731,7 +731,7 @@ def load_cub_data(
 
 
 def generate_mnist_concept_dataset(
-    concept_classes: list[int],
+    concept_classes: List[int],
     data_dir: Path,
     train: bool,
     subset_size: int,
