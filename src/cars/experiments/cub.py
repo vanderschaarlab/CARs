@@ -4,6 +4,7 @@ import logging
 import argparse
 import pandas as pd
 import numpy as np
+from typing import List
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Subset
 from cars.explanations.concept import CAR, CAV
@@ -57,7 +58,7 @@ def fit_model(batch_size: int, n_epochs: int, model_name: str):
 
 
 def concept_accuracy(
-    random_seeds: list[int],
+    random_seeds: List[int],
     plot: bool,
     batch_size: int,
     save_dir: Path = Path.cwd() / "results/cub/concept_accuracy",
@@ -510,7 +511,7 @@ def feature_importance(
 
 
 def tune_kernel(
-    random_seeds: list[int],
+    random_seeds: List[int],
     plot: bool,
     batch_size: int,
     save_dir: Path = Path.cwd() / "results/cub/tuning_kernel",

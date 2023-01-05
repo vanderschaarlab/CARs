@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from typing import Dict, List
 import logging
 import pathlib
 import json
@@ -228,7 +229,7 @@ class ClassifierECG(nn.Module):
         with open(path_to_metadata, "w") as f:
             json.dump(metadata, f, indent=4, sort_keys=True, **kwargs)
 
-    def get_hooked_modules(self) -> dict[str, nn.Module]:
+    def get_hooked_modules(self) -> Dict[str, nn.Module]:
         return {
             "Conv1": self.maxpool1,
             "Conv2": self.maxpool2,

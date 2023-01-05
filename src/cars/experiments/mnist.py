@@ -5,6 +5,7 @@ import torch
 import numpy as np
 import os
 import pandas as pd
+from typing import List
 from pathlib import Path
 from cars.models.mnist import ClassifierMnist, init_trainer, get_dataloader
 from torchvision.datasets import MNIST
@@ -66,7 +67,7 @@ def train_mnist_model(
 
 
 def concept_accuracy(
-    random_seeds: list[int],
+    random_seeds: List[int],
     latent_dim: int,
     plot: bool,
     save_dir: Path = Path.cwd() / "results/mnist/concept_accuracy",
@@ -397,7 +398,7 @@ def feature_importance(
 
 
 def kernel_sensitivity(
-    random_seeds: list[int],
+    random_seeds: List[int],
     latent_dim: int,
     plot: bool,
     save_dir: Path = Path.cwd() / "results/mnist/kernel_sensitivity",
@@ -484,9 +485,9 @@ def kernel_sensitivity(
 
 
 def concept_size_impact(
-    random_seeds: list[int],
+    random_seeds: List[int],
     latent_dim: int,
-    concept_sizes: list[int],
+    concept_sizes: List[int],
     plot: bool,
     save_dir: Path = Path.cwd() / "results/mnist/concept_set_impact",
     data_dir: Path = Path.cwd() / "data/mnist",

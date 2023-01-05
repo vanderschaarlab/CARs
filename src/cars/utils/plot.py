@@ -8,6 +8,7 @@ import argparse
 import torch
 import textwrap
 import numpy as np
+from typing import List
 from pathlib import Path
 from cars.utils.metrics import correlation_matrix
 from cars.utils.dataset import CUBDataset
@@ -186,7 +187,7 @@ def plot_attribution_correlation(
 def plot_grayscale_saliency(
     images: torch.Tensor,
     saliency: np.ndarray,
-    plot_indices: list[int],
+    plot_indices: List[int],
     results_dir: Path,
     dataset_name: str,
     concept_name: str,
@@ -258,7 +259,7 @@ def plot_color_saliency(
 def plot_time_series_saliency(
     tseries: torch.Tensor,
     saliency: np.ndarray,
-    plot_indices: list[int],
+    plot_indices: List[int],
     results_dir: Path,
     dataset_name: str,
     concept_name: str,
