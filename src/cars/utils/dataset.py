@@ -7,6 +7,7 @@ import pickle
 import numpy as np
 import linecache
 from PIL import Image
+from typing import Dict, List
 from torchvision.datasets import MNIST
 from torchvision import transforms
 from torch.utils.data.sampler import SubsetRandomSampler
@@ -368,7 +369,7 @@ class CUBDataset(Dataset):
         concept_names = self.get_concept_names()
         return concept_names.index(concept_name)
 
-    def concept_example_ids(self, concept_id: int, positive: bool = True) -> list:
+    def concept_example_ids(self, concept_id: int, positive: bool = True) -> List:
         """
         Get the dataset indices of the examples that exhibit a concept
         Args:
@@ -400,7 +401,7 @@ class CUBDataset(Dataset):
         """
         return [self.class_name(i) for i in range(self.N_CLASSES)]
 
-    def get_concept_categories(self) -> dict[str, list]:
+    def get_concept_categories(self) -> Dict[str, list]:
         """
         Get all the groups of related concepts
         Returns:
@@ -429,7 +430,7 @@ class CUBDataset(Dataset):
 
     def get_concepts_subset(
         self, concept_ids: list[int], instance_per_concept: int, random_seed: int
-    ) -> list[int]:
+    ) -> List[int]:
         """
         Give a list of example indices to create balance subset with several concepts
         Args:
