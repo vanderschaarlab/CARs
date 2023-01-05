@@ -3,6 +3,7 @@ import torch
 import pickle
 import numpy as np
 import os
+from typing import Dict, List
 import json
 import torch.nn.functional as F
 from torch.nn import Parameter
@@ -18,8 +19,11 @@ https://github.com/kzkadc/adversarial-example-mnist/blob/main/adversarial_attack
 https://github.com/yewsiang/ConceptBottleneck/blob/master/CUB/gen_cub_synthetic.py
 """
 
+
 class Attacker:
-    def __init__(self, target: nn.Module, n_steps: int, eps: float, device: torch.device):
+    def __init__(
+        self, target: nn.Module, n_steps: int, eps: float, device: torch.device
+    ):
         self.target = target
         self.n_steps = n_steps
         self.eps = eps
@@ -33,32 +37,32 @@ class Attacker:
         for _ in range(self.n_steps):
             opt.zero_grad()
             d_clamped = delta.clamp(-self.eps, self.eps)
-            y = self.target((x+d_clamped).clamp(0, 1))
+            y = self.target((x + d_clamped).clamp(0, 1))
             loss = -F.cross_entropy(y, t)
 
             loss.backward()
             opt.step()
 
-        return (x+delta).clamp(0, 1).detach()
+        return (x + delta).clamp(0, 1).detach()
 
 
 def mask_image(file_path, out_dir_name, remove_bkgnd=True):
     """
     Remove background or foreground using segmentation label
     """
-    im = np.array(Image.open(file_path).convert('RGB'))
-    segment_path = file_path.replace('images', 'segmentations').replace('.jpg', '.png')
-    segment_im = np.array(Image.open(segment_path).convert('L'))
-    mask = segment_im.astype(float)/255
+    im = np.array(Image.open(file_path).convert("RGB"))
+    segment_path = file_path.replace("images", "segmentations").replace(".jpg", ".png")
+    segment_im = np.array(Image.open(segment_path).convert("L"))
+    mask = segment_im.astype(float) / 255
     if not remove_bkgnd:  # remove bird in the foreground instead
         mask = 1 - mask
     new_im = (im * mask[:, :, None]).astype(np.uint8)
-    Image.fromarray(new_im).save(file_path.replace('/images/', out_dir_name))
+    Image.fromarray(new_im).save(file_path.replace("/images/", out_dir_name))
 
 
 def mask_dataset(test_pkl, out_dir_name, remove_bkgnd=True):
-    data = pickle.load(open(test_pkl, 'rb'))
-    file_paths = [d['img_path'] for d in data]
+    data = pickle.load(open(test_pkl, "rb"))
+    file_paths = [d["img_path"] for d in data]
     for file_path in file_paths:
         mask_image(file_path, out_dir_name, remove_bkgnd)
 
@@ -84,12 +88,20 @@ def crop_and_resize(source_img, target_img):
     # Check if source does not completely cover target
     if (source_width < target_width) or (source_height < target_height):
         # Try matching width
-        width_resize = (target_width, int((target_width / source_width) * source_height))
+        width_resize = (
+            target_width,
+            int((target_width / source_width) * source_height),
+        )
         if (width_resize[0] >= target_width) and (width_resize[1] >= target_height):
             source_resized = source_img.resize(width_resize, Image.ANTIALIAS)
         else:
-            height_resize = (int((target_height / source_height) * source_width), target_height)
-            assert (height_resize[0] >= target_width) and (height_resize[1] >= target_height)
+            height_resize = (
+                int((target_height / source_height) * source_width),
+                target_height,
+            )
+            assert (height_resize[0] >= target_width) and (
+                height_resize[1] >= target_height
+            )
             source_resized = source_img.resize(height_resize, Image.ANTIALIAS)
         # Rerun the cropping
         return crop_and_resize(source_resized, target_img)
@@ -108,7 +120,9 @@ def crop_and_resize(source_img, target_img):
         offset = (source_height - new_source_height) // 2
         resize = (0, offset, source_width, source_height - offset)
 
-    source_resized = source_img.crop(resize).resize((target_width, target_height), Image.ANTIALIAS)
+    source_resized = source_img.crop(resize).resize(
+        (target_width, target_height), Image.ANTIALIAS
+    )
     return source_resized
 
 
@@ -138,37 +152,63 @@ def get_places(fname):
     Load list of places imgs and classes into dictionary
     """
     places_dict = defaultdict(list)
-    with open(fname, 'r') as f:
+    with open(fname, "r") as f:
         for line in f:
             img_name, n = line.split()
             places_dict[int(n)].append(img_name)
     return places_dict
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
     parser = ArgumentParser(
-        description='Make segmentations',
-        formatter_class=ArgumentDefaultsHelpFormatter)
+        description="Make segmentations", formatter_class=ArgumentDefaultsHelpFormatter
+    )
 
-    parser.add_argument('--cub_dir', default='data/cub/CUB_200_2011/', help='Path to CUB (should also contain segmentations folder)')
-    parser.add_argument('--places_dir', default='data/cub/places365/', help='Path to Places365 dataset')
-    parser.add_argument('--places_split', default='val_large', help='Which Places365 split to use (folder in --places_dir)')
-    parser.add_argument('--places_file', default='places365_val.txt', help='Filepath to list of places images and classes (file in --places_dir)')
-    parser.add_argument('--out_dir', default='data/cub/', help='Output directory')
-    parser.add_argument('--black_dirname', default='CUB_black/images', help='Name of black dataset: black background for each image')
-    parser.add_argument('--random_dirname', default='CUB_random/images', help='Name of random dataset: completely random place sampled for each image')
-    parser.add_argument('--fixed_dirname', default='CUB_fixed/images', help='Name of fixed dataset: class <-> place association fixed at train, swapped at test')
-    parser.add_argument('--seed', type=int, default=42, help='Random seed')
+    parser.add_argument(
+        "--cub_dir",
+        default="data/cub/CUB_200_2011/",
+        help="Path to CUB (should also contain segmentations folder)",
+    )
+    parser.add_argument(
+        "--places_dir", default="data/cub/places365/", help="Path to Places365 dataset"
+    )
+    parser.add_argument(
+        "--places_split",
+        default="val_large",
+        help="Which Places365 split to use (folder in --places_dir)",
+    )
+    parser.add_argument(
+        "--places_file",
+        default="places365_val.txt",
+        help="Filepath to list of places images and classes (file in --places_dir)",
+    )
+    parser.add_argument("--out_dir", default="data/cub/", help="Output directory")
+    parser.add_argument(
+        "--black_dirname",
+        default="CUB_black/images",
+        help="Name of black dataset: black background for each image",
+    )
+    parser.add_argument(
+        "--random_dirname",
+        default="CUB_random/images",
+        help="Name of random dataset: completely random place sampled for each image",
+    )
+    parser.add_argument(
+        "--fixed_dirname",
+        default="CUB_fixed/images",
+        help="Name of fixed dataset: class <-> place association fixed at train, swapped at test",
+    )
+    parser.add_argument("--seed", type=int, default=42, help="Random seed")
 
     args = parser.parse_args()
 
     np.random.seed(args.seed)
 
     # Get species
-    img_dir = os.path.join(args.cub_dir, 'images')
-    seg_dir = os.path.join(args.cub_dir, 'segmentations')
+    img_dir = os.path.join(args.cub_dir, "images")
+    seg_dir = os.path.join(args.cub_dir, "segmentations")
     species = sorted(os.listdir(img_dir))
 
     # Make output directory
@@ -178,18 +218,22 @@ if __name__ == '__main__':
     places_dict = get_places(os.path.join(args.places_dir, args.places_file))
 
     # Full paths
-    places_dict = {k: [os.path.join(args.places_dir, args.places_split, p) for p in v]
-                   for k, v in places_dict.items()}
+    places_dict = {
+        k: [os.path.join(args.places_dir, args.places_split, p) for p in v]
+        for k, v in places_dict.items()
+    }
 
     # Flat list of places
     all_places = [item for sublist in places_dict.values() for item in sublist]
-    assert all(os.path.exists(p) and p.endswith('.jpg') for p in all_places)
+    assert all(os.path.exists(p) and p.endswith(".jpg") for p in all_places)
     # Iterate through places
     all_places_i = 0
     np.random.shuffle(all_places)
 
     # Arbitrarily map places class to birds class
-    sampled_places = np.random.choice(list(places_dict.keys()), size=len(species), replace=False)
+    sampled_places = np.random.choice(
+        list(places_dict.keys()), size=len(species), replace=False
+    )
     s2p_train = {s: int(p) for s, p in zip(species, sampled_places)}
     # Shift sampled places at test
     s2p_test = {s: int(p) for s, p in zip(species, np.roll(sampled_places, 1))}
@@ -203,15 +247,18 @@ if __name__ == '__main__':
         spc_seg = sorted(os.listdir(spc_seg_dir))
 
         # Make sure directory files align
-        assert all(i.endswith('.jpg') for i in spc_img)
-        assert all(i.endswith('.png') for i in spc_seg)
-        assert all(os.path.splitext(x)[0] == os.path.splitext(y)[0] for x, y in zip(spc_img, spc_seg))
+        assert all(i.endswith(".jpg") for i in spc_img)
+        assert all(i.endswith(".png") for i in spc_seg)
+        assert all(
+            os.path.splitext(x)[0] == os.path.splitext(y)[0]
+            for x, y in zip(spc_img, spc_seg)
+        )
 
         # New output directories
         spc_black_dir = os.path.join(args.out_dir, args.black_dirname, spc)
         spc_random_dir = os.path.join(args.out_dir, args.random_dirname, spc)
-        spc_train_dir = os.path.join(args.out_dir, args.fixed_dirname, 'train', spc)
-        spc_test_dir = os.path.join(args.out_dir, args.fixed_dirname, 'test', spc)
+        spc_train_dir = os.path.join(args.out_dir, args.fixed_dirname, "train", spc)
+        spc_test_dir = os.path.join(args.out_dir, args.fixed_dirname, "test", spc)
 
         os.makedirs(spc_black_dir, exist_ok=True)
         os.makedirs(spc_random_dir, exist_ok=True)
@@ -221,8 +268,12 @@ if __name__ == '__main__':
         # Get fixed places for this species
         train_place = s2p_train[spc]
         test_place = s2p_test[spc]
-        train_place_imgs = np.random.choice(places_dict[train_place], size=len(spc_img), replace=False)
-        test_place_imgs = np.random.choice(places_dict[test_place], size=len(spc_img), replace=False)
+        train_place_imgs = np.random.choice(
+            places_dict[train_place], size=len(spc_img), replace=False
+        )
+        test_place_imgs = np.random.choice(
+            places_dict[test_place], size=len(spc_img), replace=False
+        )
 
         # (image, segmentation, train place, test place
         it = zip(spc_img, spc_seg, train_place_imgs, test_place_imgs)
@@ -232,9 +283,9 @@ if __name__ == '__main__':
             full_seg_path = os.path.join(spc_seg_dir, seg_path)
 
             # Load images
-            img_np = np.asarray(Image.open(full_img_path).convert('RGB'))
+            img_np = np.asarray(Image.open(full_img_path).convert("RGB"))
             # Turn into opacity filter
-            seg_np = np.asarray(Image.open(full_seg_path).convert('RGB')) / 255
+            seg_np = np.asarray(Image.open(full_seg_path).convert("RGB")) / 255
 
             # Black background
             img_black_np = np.around(img_np * seg_np).astype(np.uint8)
@@ -246,15 +297,15 @@ if __name__ == '__main__':
             # Random background
             random_place_path = all_places[all_places_i]
             all_places_i += 1
-            random_place = Image.open(random_place_path).convert('RGB')
+            random_place = Image.open(random_place_path).convert("RGB")
 
             img_random = combine_and_mask(random_place, seg_np, img_black)
             full_random_path = os.path.join(spc_random_dir, img_path)
             img_random.save(full_random_path)
 
             # Fixed background
-            train_place = Image.open(train_place_path).convert('RGB')
-            test_place = Image.open(test_place_path).convert('RGB')
+            train_place = Image.open(train_place_path).convert("RGB")
+            test_place = Image.open(test_place_path).convert("RGB")
 
             img_train = combine_and_mask(train_place, seg_np, img_black)
             img_test = combine_and_mask(test_place, seg_np, img_black)
@@ -266,7 +317,7 @@ if __name__ == '__main__':
 
     # Save fixed class/image metadata
     fixed_dir = os.path.join(args.out_dir, args.fixed_dirname)
-    with open(os.path.join(fixed_dir, 'train_places.json'), 'w') as f:
+    with open(os.path.join(fixed_dir, "train_places.json"), "w") as f:
         json.dump(s2p_train, f, sort_keys=True, indent=4)
-    with open(os.path.join(fixed_dir, 'test_places.json'), 'w') as f:
+    with open(os.path.join(fixed_dir, "test_places.json"), "w") as f:
         json.dump(s2p_test, f, sort_keys=True, indent=4)

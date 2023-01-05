@@ -3,6 +3,7 @@ import numpy as np
 import torch.nn as nn
 import logging
 import pathlib
+from typing import Dict, List
 from torchvision.models import inception_v3, resnet50
 from tqdm import tqdm
 from typing import Optional
@@ -274,7 +275,7 @@ class CUBClassifier(nn.Module):
         path_to_model = directory / (self.name + ".pt")
         torch.save(self.state_dict(), path_to_model)
 
-    def get_hooked_modules(self) -> dict[str, nn.Module]:
+    def get_hooked_modules(self) -> Dict[str, nn.Module]:
         return {
             "Mixed5d": self.inception.Mixed_5d,
             "Mixed6e": self.inception.Mixed_6e,
@@ -444,5 +445,5 @@ class CUBResNet(nn.Module):
         path_to_model = directory / (self.name + ".pt")
         torch.save(self.state_dict(), path_to_model)
 
-    def get_hooked_modules(self) -> dict[str, nn.Module]:
+    def get_hooked_modules(self) -> Dict[str, nn.Module]:
         return {"Layer4": self.base_model.layer4}

@@ -33,9 +33,7 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.8', '3.9', "3.10"]
-        os: [ubuntu-latest, windows-latest]
-        # os: [ubuntu-latest, macos-latest, windows-latest] macos fails test in CUBDataset: 
-        # def get_concept_categories(self) -> dict[str, list]: E   TypeError: 'type' object is not subscriptable
+        os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - uses: actions/checkout@v2
         with:

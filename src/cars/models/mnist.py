@@ -8,6 +8,7 @@ import numpy as np
 import csv
 import torch.nn.functional as F
 import torch.optim as opt
+from typing import Dict, List
 import torchvision.transforms as transforms
 from torchvision import datasets
 from tqdm import tqdm
@@ -250,7 +251,7 @@ class ClassifierMnist(nn.Module):
         with open(path_to_metadata, "w") as f:
             json.dump(metadata, f, indent=4, sort_keys=True, **kwargs)
 
-    def get_hooked_modules(self) -> dict[str, nn.Module]:
+    def get_hooked_modules(self) -> Dict[str, nn.Module]:
         return {
             "Conv1": self.maxpool1,
             "Conv2": self.maxpool2,

@@ -369,7 +369,7 @@ class CUBDataset(Dataset):
         concept_names = self.get_concept_names()
         return concept_names.index(concept_name)
 
-    def concept_example_ids(self, concept_id: int, positive: bool = True) -> list:
+    def concept_example_ids(self, concept_id: int, positive: bool = True) -> List:
         """
         Get the dataset indices of the examples that exhibit a concept
         Args:
@@ -401,7 +401,7 @@ class CUBDataset(Dataset):
         """
         return [self.class_name(i) for i in range(self.N_CLASSES)]
 
-    def get_concept_categories(self) -> Dict[str, List]:
+    def get_concept_categories(self) -> Dict[str, list]:
         """
         Get all the groups of related concepts
         Returns:
@@ -429,8 +429,8 @@ class CUBDataset(Dataset):
         return groups_dic
 
     def get_concepts_subset(
-        self, concept_ids: list[int], instance_per_concept: int, random_seed: int
-    ) -> list[int]:
+        self, concept_ids: List[int], instance_per_concept: int, random_seed: int
+    ) -> List[int]:
         """
         Give a list of example indices to create balance subset with several concepts
         Args:
@@ -731,7 +731,7 @@ def load_cub_data(
 
 
 def generate_mnist_concept_dataset(
-    concept_classes: list[int],
+    concept_classes: List[int],
     data_dir: Path,
     train: bool,
     subset_size: int,

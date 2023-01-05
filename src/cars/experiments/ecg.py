@@ -5,6 +5,7 @@ import argparse
 import itertools
 import pandas as pd
 import numpy as np
+from typing import List
 from pathlib import Path
 from torch.utils.data import DataLoader
 from cars.utils.dataset import ECGDataset, generate_ecg_concept_dataset
@@ -50,7 +51,7 @@ def train_ecg_model(
 
 
 def concept_accuracy(
-    random_seeds: list[int],
+    random_seeds: List[int],
     latent_dim: int,
     plot: bool,
     save_dir: Path = Path.cwd() / "results/ecg/concept_accuracy",
